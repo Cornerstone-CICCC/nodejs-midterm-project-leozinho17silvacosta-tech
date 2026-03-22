@@ -1,0 +1,33 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="register">
+  <link rel="stylesheet" href="/css/register.css" />
+
+  <div class="auth-container">
+
+    <a href="/" class="btn-home">&larr; Home</a>
+
+    <form id="regForm">
+      <h1>REGISTER</h1>
+      <input type="email" id="email" placeholder="E-mail" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit">Create Account</button>
+    </form>
+  </div>
+</Layout>
+
+<script>
+  document.getElementById('regForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = (document.getElementById('email') as HTMLInputElement).value;
+    const password = (document.getElementById('password') as HTMLInputElement).value;
+    const res = await fetch('http://localhost:3000/users/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    if (res.status === 201) { alert('Success!'); window.location.href = '/login'; }
+    else alert('Error to register new user!');
+  });
+</script>

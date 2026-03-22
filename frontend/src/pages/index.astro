@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Welcome">
+  <link rel="stylesheet" href="/css/index.css" />
+  <div class="video-background">
+    <iframe
+src="https://www.youtube.com/embed/Y8CbMkfu-qU?autoplay=1&mute=1&loop=1&playlist=Y8CbMkfu-qU&controls=0&showinfo=0&rel=0&modestbranding=1"      allow="autoplay; encrypted-media">
+    </iframe>
+  </div>
+
+  <div class="overlay"></div>
+
+  <div class="hero-content">
+    <h1>2026 FIFA World Cup</h1>
+    <p>The official simulator for the FIFA WC 2026!</p>
+    
+    <div style="display: flex; gap: 20px;">
+      <a href="/login" class="add-btn">Login</a>
+      <a href="/register" class="add-btn">Register</a>
+    </div>
+  </div>
+</Layout>

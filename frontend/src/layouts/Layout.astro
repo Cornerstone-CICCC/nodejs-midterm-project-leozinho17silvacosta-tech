@@ -1,0 +1,64 @@
+---
+const { title } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title} | WC2026</title>
+    <link rel="stylesheet" href="/css/layout.css" />
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <img src="/images/695931.png">
+        </div>
+
+        <div class="app-title">
+            <h1>
+                <span>W</span>
+                <span>C</span>
+
+                <span>&nbsp;</span> 
+
+                <span>2</span>
+                <span>0</span>
+                <span>2</span>
+                <span>2</span>
+
+                <span>&nbsp;</span> 
+
+                <span class="divider">|</span> 
+
+                <span>&nbsp;</span> 
+
+                <span>S</span>
+                <span>i</span>
+                <span>m</span>
+                <span>u</span>
+                <span>l</span>
+                <span>a</span>
+                <span>t</span>
+                <span>o</span>
+                <span>r</span>
+            </h1>
+            <p>Choose your favorite national team, pick your bets and cheer!</p>
+        </div>
+
+        <div class="buttons">
+            <a href="/national-teams">National Teams</a>
+            <a href="/simulator">Simulator</a>
+            <a href="/favorites" id="nav-favorites">Favorites ⭐</a>
+        </div>
+    </nav>
+
+    <main>
+        <slot />
+    </main>
+
+    <footer>
+        <p>&copy; Developed by Leonardo Costa | All Rights Reserved, 2026</p>
+    </footer>
+</body>
+</html>

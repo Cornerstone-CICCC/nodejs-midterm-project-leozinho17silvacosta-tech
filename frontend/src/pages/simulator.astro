@@ -1,0 +1,315 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const groups = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'];
+
+const groupTeams: Record<string, {name: string, flag: string}[]> = {
+    'A': [
+        { name: 'Mexico', flag: '/flags/Mexico.png' },
+        { name: 'South Africa', flag: '/flags/South Africa.png' },
+        { name: 'South Korea', flag: '/flags/South Korea.png' },
+        { name: 'TDB', flag: '/flags/questionmark.png' }
+    ],
+    'B': [
+        { name: 'Canada', flag: '/flags/Canada.png' },
+        { name: 'Qatar', flag: '/flags/Qatar.png' },
+        { name: 'Switzerland', flag: '/flags/Switzerland.png' },
+        { name: 'TDB', flag: '/flags/questionmark.png' }
+    ],
+    'C': [
+        { name: 'Brazil', flag: '/flags/Brazil.png' },
+        { name: 'Morocco', flag: '/flags/Morocco.png' },
+        { name: 'Haiti', flag: '/flags/Haiti.png' },
+        { name: 'Scotland', flag: '/flags/Scotland.png' }
+    ],
+    'D': [
+        { name: 'USA', flag: '/flags/USA.png' },
+        { name: 'Paraguay', flag: '/flags/Paraguay.png' },
+        { name: 'Australia', flag: '/flags/Australia.png' },
+        { name: 'TDB', flag: '/flags/questionmark.png' }
+    ],
+    'E': [
+        { name: 'Germany', flag: '/flags/Germany.png' },
+        { name: 'Curaçao', flag: '/flags/Curaçao.png' },
+        { name: 'Ivory Coast', flag: '/flags/Ivory Coast.png' },
+        { name: 'Ecuador', flag: '/flags/Ecuador.png' }
+    ],
+    'F': [
+        { name: 'Netherlands', flag: '/flags/Netherlands.png' },
+        { name: 'Japan', flag: '/flags/Japan.png' },
+        { name: 'Tunisia', flag: '/flags/Tunisia.png' },
+        { name: 'TDB', flag: '/flags/questionmark.png' }
+    ],
+    'G': [
+        { name: 'Belgium', flag: '/flags/Belgium.png' },
+        { name: 'Egypt', flag: '/flags/Egypt.png' },
+        { name: 'Iran', flag: '/flags/Iran.png' },
+        { name: 'New Zealand', flag: '/flags/New Zealand.png' }
+    ],
+    'H': [
+        { name: 'Spain', flag: '/flags/Spain.png' },
+        { name: 'Cape Verde', flag: '/flags/Cape Verde.png' },
+        { name: 'Saudi Arabia', flag: '/flags/Saudi Arabia.png' },
+        { name: 'Uruguay', flag: '/flags/Uruguay.png' }
+    ],
+    'I': [
+        { name: 'France', flag: '/flags/France.png' },
+        { name: 'Senegal', flag: '/flags/Senegal.png' },
+        { name: 'Norway', flag: '/flags/Norway.png' },
+        { name: 'Argentina', flag: '/flags/Argentina.png' }
+    ],
+    'J': [
+        { name: 'Algeria', flag: '/flags/Algeria.png' },
+        { name: 'Austria', flag: '/flags/Austria.png' },
+        { name: 'Jordan', flag: '/flags/Jordan.png' },
+        { name: 'TDB', flag: '/flags/questionmark.png' }
+    ],
+    'K': [
+        { name: 'Portugal', flag: '/flags/Portugal.png' },
+        { name: 'Uzbekistan', flag: '/flags/Uzbekistan.png' },
+        { name: 'Colombia', flag: '/flags/Colombia.png' },
+        { name: 'TDB', flag: '/flags/questionmark.png' }
+    ],
+    'L': [
+        { name: 'England', flag: '/flags/England.png' },
+        { name: 'Croatia', flag: '/flags/Croatia.png' },
+        { name: 'Ghana', flag: '/flags/Ghana.png' },
+        { name: 'Panama', flag: '/flags/Panama.png' }
+    ]
+};
+---
+
+<Layout title="WC 2026 Simulator">
+    <link rel="stylesheet" href="/css/simulator.css" />
+
+    <div class="dashboard-page">
+        <a href="/" class="btn-home">&larr; Home</a>
+        <h1 class="section-title">WC 2026 Simulator</h1>
+
+        <section id="phase-groups" class="simulator-section">
+            <h2 class="phase-title">Group Stage</h2>
+            <div class="grid">
+                {groups.map(letter => (
+                    <div class="card group-card" data-group={letter}>
+                        <h3>Group {letter}</h3>
+                        <div class="team-list">
+                            {groupTeams[letter].map(team => (
+                                <div class="team-row">
+                                    <button 
+                                        class="add-btn team-btn" 
+                                        data-team={team.name} 
+                                        data-flag={team.flag}
+                                    >
+                                        <img src={team.flag} alt="" class="mini-flag" />
+                                        {team.name}
+                                    </button>
+                                    <span class="rank-badge">--</span>
+                                </div>
+                            ))}
+                        </div>
+                        <button class="reset-group-btn">Clear Selections</button>
+                    </div>
+                ))}
+            </div>
+            <button id="btn-to-oitavas" class="details-btn" style="display:none; margin: 40px auto; width: 300px;">Generate Round of 16</button>
+        </section>
+
+        <section id="phase-oitavas" class="simulator-section" style="display:none;">
+            <button class="back-btn" onclick="switchPhase('phase-oitavas', 'phase-groups')">&larr; Back to Group Stage</button>
+            <h2 class="phase-title">Round of 16</h2>
+            <div class="bracket-grid" id="oitavas-matches"></div>
+            <button id="btn-to-quartas" class="details-btn" style="display:none;">Generate Quarter-Finals</button>
+        </section>
+
+        <section id="phase-quartas" class="simulator-section" style="display:none;">
+            <button class="back-btn" onclick="switchPhase('phase-quartas', 'phase-oitavas')">&larr; Back to Round of 16</button>
+            <h2 class="phase-title">Quarter-Finals</h2>
+            <div class="bracket-grid" id="quartas-matches"></div>
+            <button id="btn-to-semi" class="details-btn" style="display:none;">Generate Semi-Finals</button>
+        </section>
+
+        <section id="phase-semi" class="simulator-section" style="display:none;">
+            <button class="back-btn" onclick="switchPhase('phase-semi', 'phase-quartas')">&larr; Back to Quarter-Finals</button>
+            <h2 class="phase-title">Semi-Finals</h2>
+            <div class="bracket-grid" id="semi-matches"></div>
+            <button id="btn-to-final" class="details-btn" style="display:none;">Go to Grand Final</button>
+        </section>
+
+        <section id="phase-final" class="simulator-section" style="display:none;">
+            <button class="back-btn" onclick="switchPhase('phase-final', 'phase-semi')">&larr; Back to Semi-Finals</button>
+            <h2 class="phase-title">The Grand Final!</h2>
+            <div class="bracket-grid" id="final-matches"></div>
+        </section>
+    </div>
+</Layout>
+
+<script is:inline>
+    // CONFETTI ANIMATION:
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js';
+    document.head.appendChild(script);
+
+    const selections = {}; 
+    const bracketResults = { oitavas: [], quartas: [], semi: [], final: [] };
+
+    // GROUP STAGE:
+    document.querySelectorAll('.group-card').forEach(card => {
+        const group = card.dataset.group;
+        selections[group] = [];
+        const buttons = card.querySelectorAll('.team-btn');
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const teamName = btn.dataset.team;
+                const teamFlag = btn.dataset.flag;
+                
+                if (selections[group].some(t => t.name === teamName)) return;
+
+                if (selections[group].length < 2) {
+                    selections[group].push({ name: teamName, flag: teamFlag });
+                    btn.classList.add('selected-team');
+                    btn.nextElementSibling.innerText = `${selections[group].length}º`;
+                    btn.nextElementSibling.classList.add('active-badge');
+                    checkGroupsReady();
+                }
+            });
+        });
+
+        card.querySelector('.reset-group-btn').addEventListener('click', () => {
+            selections[group] = [];
+            buttons.forEach(b => {
+                b.classList.remove('selected-team');
+                b.nextElementSibling.innerText = '--';
+                b.nextElementSibling.classList.remove('active-badge');
+            });
+            checkGroupsReady();
+        });
+    });
+
+    function checkGroupsReady() {
+        const completed = Object.values(selections).filter(s => s.length === 2).length;
+        document.getElementById('btn-to-oitavas').style.display = completed === 12 ? 'block' : 'none';
+    }
+
+    // PLAYOFFS:
+    function renderBracket(container, items, currentPhase, nextBtnId) {
+        container.innerHTML = '';
+        items.forEach((item, i) => {
+            let t1, t2;
+            if (currentPhase === 'oitavas') {
+                t1 = selections[item[0]][0];
+                t2 = selections[item[1]][1];
+            } else {
+                t1 = bracketResults[currentPhase][i * 2];
+                t2 = bracketResults[currentPhase][i * 2 + 1];
+            }
+
+            container.innerHTML += `
+                <div class="card bracket-match">
+                    <h3>Match ${i + 1}</h3>
+                    <div class="team-list">
+                        <button class="add-btn bracket-btn" data-team="${t1.name}" data-flag="${t1.flag}">
+                            <img src="${t1.flag}" class="mini-flag" /> ${t1.name}
+                        </button>
+                        <p style="color:yellow; font-family:'Monomaniac One'; margin: 5px 0;">VS</p>
+                        <button class="add-btn bracket-btn" data-team="${t2.name}" data-flag="${t2.flag}">
+                            <img src="${t2.flag}" class="mini-flag" /> ${t2.name}
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+        setupBracketLogic(currentPhase, nextBtnId);
+    }
+
+    function setupBracketLogic(phase, nextBtnId) {
+        const btns = document.querySelectorAll(`#${phase}-matches .bracket-btn`);
+        btns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const parent = this.closest('.team-list');
+                parent.querySelectorAll('.bracket-btn').forEach(b => b.classList.remove('selected-team'));
+                this.classList.add('selected-team');
+
+                updateBracketWinners(phase);
+
+                if (phase === 'final') {
+                    const title = document.querySelector('#phase-final .phase-title');
+                    title.innerText = `🏆 CHAMPION: ${this.innerText.toUpperCase()} 🏆`;
+
+                    // LOGIC CONFETTI FINAL:
+                    if (window.confetti) {
+                        var duration = 5 * 1000;
+                        var animationEnd = Date.now() + duration;
+                        var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
+
+                        function randomInRange(min, max) {
+                            return Math.random() * (max - min) + min;
+                        }
+
+                        var interval = setInterval(function() {
+                            var timeLeft = animationEnd - Date.now();
+
+                            if (timeLeft <= 0) {
+                                return clearInterval(interval);
+                            }
+
+                            var particleCount = 50 * (timeLeft / duration);
+                            
+                            window.confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                            window.confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+                        }, 250);
+                    }
+                }
+                
+                const winnersCount = document.querySelectorAll(`#${phase}-matches .selected-team`).length;
+                if (nextBtnId && winnersCount === btns.length / 2) {
+                    document.getElementById(nextBtnId).style.display = 'block';
+                }
+            });
+        });
+    }
+
+    function updateBracketWinners(phase) {
+        const selected = document.querySelectorAll(`#${phase}-matches .selected-team`);
+        const winners = Array.from(selected).map(b => ({
+            name: b.dataset.team,
+            flag: b.dataset.flag
+        }));
+
+        if (phase === 'oitavas') bracketResults.quartas = winners;
+        if (phase === 'quartas') bracketResults.semi = winners;
+        if (phase === 'semi') bracketResults.final = winners;
+    }
+
+    // NAVIGATION BUTTONS:
+    document.getElementById('btn-to-oitavas').addEventListener('click', () => {
+        const pairings = [['A','B'],['C','D'],['E','F'],['G','H'],['I','J'],['K','L'],['B','A'],['D','C']];
+        renderBracket(document.getElementById('oitavas-matches'), pairings, 'oitavas', 'btn-to-quartas');
+        switchPhase('phase-groups', 'phase-oitavas');
+    });
+
+    document.getElementById('btn-to-quartas').addEventListener('click', () => {
+        renderBracket(document.getElementById('quartas-matches'), [0,1,2,3], 'quartas', 'btn-to-semi');
+        switchPhase('phase-oitavas', 'phase-quartas');
+    });
+
+    document.getElementById('btn-to-semi').addEventListener('click', () => {
+        renderBracket(document.getElementById('semi-matches'), [0,1], 'semi', 'btn-to-final');
+        switchPhase('phase-quartas', 'phase-semi');
+    });
+
+    document.getElementById('btn-to-final').addEventListener('click', () => {
+        renderBracket(document.getElementById('final-matches'), [0], 'final', null);
+        switchPhase('phase-semi', 'phase-final');
+    });
+
+    window.switchPhase = function(oldId, newId) {
+        document.getElementById(oldId).style.display = 'none';
+        document.getElementById(newId).style.display = 'flex';
+        window.scrollTo(0, 0);
+        
+        if (oldId === 'phase-final') {
+            document.querySelector('#phase-final .phase-title').innerText = "The Grand Final - MetLife Stadium";
+        }
+    }
+</script>

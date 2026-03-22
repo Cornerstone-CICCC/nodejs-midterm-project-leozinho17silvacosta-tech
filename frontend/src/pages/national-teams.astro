@@ -1,0 +1,160 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+let teams = [];
+let errorMsg = "";
+
+try {
+  const res = await fetch('http://localhost:3000/teams');
+  if (res.ok) {
+    teams = await res.json();
+  } else {
+    errorMsg = "Error loading national teams.";
+  }
+} catch (e) {
+  errorMsg = "Connection error.";
+}
+---
+
+<Layout title="World Cup 2026">
+  <link rel="stylesheet" href="/css/national-teams.css" />
+
+  <div class="dashboard-page">
+    <a href="/" class="btn-home">&larr; Home</a>
+
+    <h2 class="section-title">National Teams | FIFA WC 2026</h2>
+
+    <div class="search-container">
+      <form id="searchForm" onsubmit="event.preventDefault(); return false;">
+        <input 
+          type="text" 
+          id="teamSearch" 
+          placeholder="Search for a national team..." 
+          autocomplete="off"
+        />
+      </form>
+    </div>
+
+    <div class="grid" id="teams-grid">
+      {teams.map((t: any) => (
+        <div class="card">
+          <div class="card-content">
+            <div class="flag-container">
+              <img 
+                src={`http://localhost:3000/public/flags/${t.name}.png`} 
+                alt={t.name} 
+                class="team-flag"
+              />
+            </div>
+            
+            <h2>{t.name}</h2>
+            <div class="description">
+              <p>"{t.description}"</p>
+            </div>
+            <button class="details-btn" data-team={JSON.stringify(t)}>Details</button>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div id="team-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <div id="modal-body"></div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('team-modal');
+    const modalBody = document.getElementById('modal-body');
+    const searchInput = document.getElementById('teamSearch');
+    const teamsGrid = document.getElementById('teams-grid');
+
+// SEARCH FUNCTION:
+    async function performSearch(query) {
+      try {
+        const res = await fetch(`http://localhost:3000/teams/search?q=${query}`);
+        const filteredTeams = await res.json();
+
+        if (filteredTeams.length === 0) {
+          teamsGrid.innerHTML = '<p class="not-found">National Teams not found.</p>';
+          return;
+        }
+
+        teamsGrid.innerHTML = filteredTeams.map(t => `
+          <div class="card">
+            <div class="card-content">
+              <div class="flag-container">
+                <img src="http://localhost:3000/public/flags/${t.name}.png" 
+                     class="team-flag" 
+                     onerror="this.src='https://cdn-icons-png.flaticon.com/512/33/33736.png'"/>
+              </div>
+              <h2>${t.name}</h2>
+              <div class="description"><p>"${t.description}"</p></div>
+              <button class="details-btn" data-team='${JSON.stringify(t)}'>Details</button>
+            </div>
+          </div>
+        `).join('');
+      } catch (err) {
+        console.error("Search error:", err);
+      }
+    }
+
+// SEARCH REAL TIME:
+    searchInput?.addEventListener('input', (e) => {
+      performSearch(e.target.value);
+    });
+
+    searchInput?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        performSearch(e.target.value);
+      }
+    });
+
+// FAVORITES FUNCTION:
+    function saveFavorite(team) {
+      const favs = JSON.parse(localStorage.getItem('wc_favorites')) || [];
+      if (!favs.some(f => f.name === team.name)) {
+        favs.push(team);
+        localStorage.setItem('wc_favorites', JSON.stringify(favs));
+        alert(`${team.name} added to favorites! ⭐`);
+      } else {
+        alert("Already in favorites!");
+      }
+    }
+
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.details-btn');
+      
+      if (btn && modal) {
+        const team = JSON.parse(btn.getAttribute('data-team'));
+        modalBody.innerHTML = `
+          <img src="http://localhost:3000/public/flags/${team.name}.png" class="team-flag-modal" onerror="this.src='https://cdn-icons-png.flaticon.com/512/33/33736.png'"/>
+          <h2 style="color: yellow; font-family: 'Monomaniac One';">${team.name}</h2>
+          <div class="modal-info">
+            <p><strong>Group:</strong> ${team.group}</p>
+            <p><strong>Match Venue:</strong> ${team.MatchesCity}</p>
+            <p><strong>Star Player:</strong> ${team.starPlayer}</p>
+            <p><strong>Titles:</strong> ${team.titles}</p>
+          </div>
+          <button class="add-btn btn-save-favorite" data-team-raw='${JSON.stringify(team)}'>
+            Favorite National Team ⭐
+          </button>
+        `;
+        modal.style.display = 'flex';
+      }
+
+      if (e.target.classList.contains('btn-save-favorite')) {
+        saveFavorite(JSON.parse(e.target.getAttribute('data-team-raw')));
+      }
+
+      if (e.target.classList.contains('close-modal') || e.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+  });
+</script>
