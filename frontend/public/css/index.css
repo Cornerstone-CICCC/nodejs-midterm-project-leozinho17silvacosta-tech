@@ -113,3 +113,51 @@ body, html {
     box-shadow: 0 0 20px rgba(255, 255, 0, 0.4);
     border: 2px solid yellow;
 }
+
+/* RESPONSIVINESS */
+
+/* MOBILE: */
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 2.5rem;
+        line-height: 1.1;
+        margin-bottom: 20px;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+        margin: 10px 0 60px;
+        padding: 0 10px;
+    }
+
+    .hero-content {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .add-btn {
+        width: 100%;
+        max-width: 280px;
+        padding: 12px 20px;
+        font-size: 1.1rem;
+        text-align: center;
+    }
+
+    .video-background iframe {
+        width: 300vw;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* LARGE SCREEN: */
+@media (min-width: 2000px) {
+    .hero-content h1 {
+        font-size: 7rem;
+    }
+    
+    .hero-content p {
+        font-size: 1.6rem;
+    }
+}

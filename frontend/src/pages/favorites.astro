@@ -74,7 +74,7 @@ import Layout from '../layouts/Layout.astro';
                         <h2>${team.name}</h2>
                         <p><strong>Group:</strong> ${team.group}</p>
                         <p><strong>Rating:</strong> ${'⭐'.repeat(team.rating || 0) || 'Not rated'}</p>
-                        <p><strong>Expected Pts:</strong> ${team.expectedPoints || 0}</p>
+                        <p><strong>Expected Points:</strong> ${team.expectedPoints || 0}</p>
                         <p class="comment-text">"${team.comment || 'No comments yet...'}"</p>
                     </div>
                     
@@ -121,7 +121,7 @@ import Layout from '../layouts/Layout.astro';
     });
 
     window.removeFavorite = function(name) {
-        if(!confirm("Remove from favorites?")) return;
+        if(!confirm("Are you sure you want to remove from favorites?")) return;
         let favs = JSON.parse(localStorage.getItem('wc_favorites')) || [];
         favs = favs.filter(f => f.name !== name);
         localStorage.setItem('wc_favorites', JSON.stringify(favs));

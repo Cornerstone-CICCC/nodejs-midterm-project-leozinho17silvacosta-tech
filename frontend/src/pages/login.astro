@@ -46,7 +46,8 @@ import Layout from '../layouts/Layout.astro';
       });
       
       if (res.ok) {
-        window.location.href = '/dashboard';
+        alert("Welcome to FIFA WC 2026 | Simulator!");
+        window.location.href = '/national-teams';
       } else {
         const msg = await res.text();
         alert(msg || 'Error!');

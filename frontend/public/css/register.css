@@ -108,3 +108,54 @@ html, body {
     color: black;
     box-shadow: 0 0 20px rgba(255, 255, 0, 0.4);
 }
+
+/* RESPONSIVINESS */
+
+/* MOBILE: */
+@media (max-width: 768px) {
+    .auth-container {
+        padding: 100px 20px 40px;
+        justify-content: flex-start;
+    }
+
+    #regForm {
+        width: 100%;
+        padding: 30px 20px;
+    }
+
+    #regForm h1 {
+        font-size: 2.2rem;
+        margin-bottom: 25px;
+    }
+
+    #regForm input {
+        padding: 14px;
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+    }
+
+    #regForm button {
+        padding: 15px;
+        font-size: 1.1rem;
+    }
+
+    .btn-home {
+        top: 12px;
+        left: 17%;
+        transform: translateX(-50%);
+        width: auto;
+        white-space: nowrap;
+        background-color: black;
+    }
+}
+
+@media (min-width: 2000px) {
+    #regForm {
+        max-width: 450px;
+        padding: 50px;
+    }
+
+    #regForm h1 {
+        font-size: 4rem;
+    }
+}

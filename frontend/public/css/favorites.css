@@ -277,3 +277,87 @@ textarea, input[type="number"] {
     font-family: 'Monomaniac One', sans-serif;
     border-radius: 8px;
 }
+
+/* RESPONSIVINESS */
+
+/* MOBILE: */
+@media (max-width: 768px) {
+    .dashboard-page {
+        padding: 100px 15px 40px;
+    }
+
+    .section-title {
+        font-size: 2rem;
+        margin-bottom: 20px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        gap: 25px;
+    }
+
+    .card {
+        padding: 20px;
+        max-width: 100%;
+    }
+
+    .modal-info h2 {
+        font-size: 1.5rem;
+    }
+
+    .modal-info p {
+        font-size: 1rem;
+    }
+
+    .edit-btn, .reset-group-btn {
+        width: 100%;
+        max-width: 280px;
+        height: 50px;
+        font-size: 1.1rem;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    .modal-content input, 
+    .modal-content textarea, 
+    input[type="number"] {
+        font-size: 1.1rem;
+        padding: 12px;
+    }
+
+    #editTitle {
+        font-size: 1.5rem;
+    }
+
+    .btn-home {
+        top: 20px;
+        left: 15%;
+        transform: translateX(-50%);
+        font-size: 0.9rem;
+    }
+
+    .empty-msg p {
+        font-size: 1rem;
+    }
+}
+
+/* LARGE SCREEN: */
+@media (min-width: 2000px) {
+    .grid {
+        max-width: 1400px;
+        grid-template-columns: repeat(6, 1fr);
+    }
+
+    .section-title {
+        font-size: 4.5rem;
+    }
+
+    .card {
+        max-width: 350px;
+    }
+}

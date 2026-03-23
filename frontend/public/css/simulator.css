@@ -197,3 +197,89 @@
     color: black;
     box-shadow: 0 0 20px rgba(255, 255, 0, 0.4);
 }
+
+/* RESPONSIVINESS */
+
+/* MOBILE: */
+@media (max-width: 768px) {
+    .dashboard-page {
+        padding: 80px 10px 40px;
+    }
+
+    .section-title, .phase-title {
+        font-size: 2rem;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .grid, .bracket-grid {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 20px;
+        padding: 20px 15px;
+        width: 100vw;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .card {
+        flex: 0 0 300px;
+        scroll-snap-align: center;
+        max-width: 300px !important;
+    }
+
+    .add-btn, .details-btn, .team-btn, .bracket-btn {
+        width: 100% !important;
+        max-width: 260px !important;
+        min-width: auto !important;
+        margin: 8px auto !important;
+    }
+
+    .grid::-webkit-scrollbar, .bracket-grid::-webkit-scrollbar {
+        display: none; 
+    }
+
+    .rank-badge {
+        right: -10px;
+        font-size: 1rem;
+        opacity: 0.5;
+    }
+
+    .phase-title {
+        font-size: 1.8rem;
+        margin-top: 20px;
+    }
+
+    .back-btn {
+        align-self: center;
+        margin-bottom: 30px;
+    }
+
+    .btn-home {
+        position: relative;
+        top: 0;
+        left: 0;
+        margin: 0 auto 20px;
+        display: inline-block;
+        transform: none;
+    }
+
+    .team-row {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+}
+
+/* LARGE SCREEN: */
+@media (min-width: 1600px) {
+    .grid, .bracket-grid {
+        grid-template-columns: repeat(4, 1fr);
+        max-width: 1600px;
+    }
+
+    .section-title, .phase-title {
+        font-size: 4.5rem;
+    }
+}
